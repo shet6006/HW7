@@ -95,7 +95,7 @@ int main()
 			insertLast(headnode, key);
 			break;
 		case 'e': case 'E':
-			//deleteLast(headnode);
+			deleteLast(headnode);
 			break;
 		case 'f': case 'F':
 			printf("Your Key = ");
@@ -197,12 +197,25 @@ int insertLast(headNode* h, int key) {
 
 /**
  * list의 마지막 노드 삭제
+ */
 
 int deleteLast(headNode* h) {
+	listNode* node; //리스트를 둘러보기 위한 노드
+	node=h->first; //node에 리스트의 주소를 넣어줌
+	if(h->first==NULL){
+		return 0;
+	} //리스트가 비어있을 때 전처리
+	else{ //리스트가 비어있지 않을 때
+		while(node->rlink->rlink!=NULL || node->rlink!=NULL){ //노드의 rlink의 rlink가 NULL 즉, 두개 뒤의 노드가 비어있을때까지
+			node=node->rlink; //노드의 위치를 한칸씩 뒤로 옮긴다
+		}
+		node->rlink=NULL; //마지막 노드와 그 전 노드의 연결을 끊어준다
+		free(node->rlink); //마지막 노드의 메모리를 해제한다
+	}
 
 
 	return 0;
-}*/
+}
 
 
 
@@ -236,6 +249,7 @@ int deleteFirst(headNode* h) {
 		listNode* node; //리스트를 둘러보기 위한 노드
 		node=h->first; //node에 리스트의 주소를 넣어줌
 		h->first=node->rlink; //리스트의 시작을 노드의 rlink로 옮겨주면서 첫 번째 노드를 떼어내줌
+		free(node); //수정
 	}
 	return 0;
 }
