@@ -92,7 +92,7 @@ int main()
 		case 'n': case 'N':
 			printf("Your Key = ");
 			scanf("%d", &key);
-		//	insertLast(headnode, key);
+			insertLast(headnode, key);
 			break;
 		case 'e': case 'E':
 			//deleteLast(headnode);
@@ -103,7 +103,7 @@ int main()
 			insertFirst(headnode, key);
 			break;
 		case 't': case 'T':
-			//deleteFirst(headnode);
+			deleteFirst(headnode);
 			break;
 		case 'r': case 'R':
 			//invertList(headnode);
@@ -116,7 +116,7 @@ int main()
 			break;
 		}
 
-	}while(command != '0' && command != 'Q');
+	}while(command != 'q' && command != 'Q');
 
 	return 1;
 }
@@ -171,11 +171,27 @@ void printList(headNode* h) {
 
 /**
  * list에 key에 대한 노드하나를 추가
+ */
 
 int insertLast(headNode* h, int key) {
-
+	listNode* NewNode=(listNode*)malloc(sizeof(listNode)); //삽입할 새로운 노드 생성
+	listNode* node; //리스트를 둘러보기 위한 노드
+	node=h->first; //node에 리스트의 주소를 넣어줌
+	NewNode->key=key; //새로운 노드의 키에 입력받은키 할당
+	if(h->first==NULL){ //헤드가 비어있으면 리스트의 첫 노드로 NewNode 삽입
+		h->first=NewNode;
+		NewNode->rlink=NULL; //NewNode의 rlink를 비워 다음 노드가 올 수 있도록 함
+	}
+	else { //헤드 뒤로 리스트가 존재하는 경우
+		while(node->rlink!=NULL){ //노드를 rlink로 옮겨주면서 리스트 탐색 (리스트 끝까지)
+			node=node->rlink;
+		}
+		node->rlink=NewNode; //리스트의 마지막 노드의 rlink에 NewNode를 삽입
+		NewNode->llink=node; //위와 동일하게 NewNode의 llink에 노드의 위치를 넣어 이어줌
+		NewNode->rlink=NULL; //다음 노드를 삽입할 수 있도록 노드를 비워줌
+	}
 	return 0;
-}*/
+}
 
 
 
@@ -210,11 +226,19 @@ int insertFirst(headNode* h, int key) {
 
 /**
  * list의 첫번째 노드 삭제
+ */
 
 int deleteFirst(headNode* h) {
-
+	if(h->first==NULL){
+		return 0;
+	} //리스트가 비어있을 때 전처리
+	else{ //리스트가 비어있지 않을 때
+		listNode* node; //리스트를 둘러보기 위한 노드
+		node=h->first; //node에 리스트의 주소를 넣어줌
+		h->first=node->rlink; //리스트의 시작을 노드의 rlink로 옮겨주면서 첫 번째 노드를 떼어내줌
+	}
 	return 0;
-}*/
+}
 
 
 
