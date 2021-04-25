@@ -82,12 +82,12 @@ int main()
 		case 'i': case 'I':
 			printf("Your Key = ");
 			scanf("%d", &key);
-			//insertNode(headnode, key);
+			insertNode(headnode, key);
 			break;
 		case 'd': case 'D':
 			printf("Your Key = ");
 			scanf("%d", &key);
-			//deleteNode(headnode, key);
+			deleteNode(headnode, key);
 			break;
 		case 'n': case 'N':
 			printf("Your Key = ");
@@ -206,14 +206,12 @@ int deleteLast(headNode* h) {
 		return 0;
 	} //리스트가 비어있을 때 전처리
 	else{ //리스트가 비어있지 않을 때
-		while(node->rlink->rlink!=NULL || node->rlink!=NULL){ //노드의 rlink의 rlink가 NULL 즉, 두개 뒤의 노드가 비어있을때까지
+		while(node->rlink->rlink!=NULL){ //노드의 rlink의 rlink가 NULL 즉, 두개 뒤의 노드가 비어있을때까지
 			node=node->rlink; //노드의 위치를 한칸씩 뒤로 옮긴다
 		}
 		node->rlink=NULL; //마지막 노드와 그 전 노드의 연결을 끊어준다
 		free(node->rlink); //마지막 노드의 메모리를 해제한다
 	}
-
-
 	return 0;
 }
 
@@ -258,27 +256,63 @@ int deleteFirst(headNode* h) {
 
 /**
  * 리스트의 링크를 역순으로 재 배치
+ *
 
 int invertList(headNode* h) {
 
 	return 0;
-}*/
+}
+*/ //구현실패
 
 
 
 /* 리스트를 검색하여, 입력받은 key보다 큰값이 나오는 노드 바로 앞에 삽입
+ *
+ */
 int insertNode(headNode* h, int key) {
+	listNode* NewNode=(listNode*)malloc(sizeof(listNode)); //삽입할 새로운 노드 생성
+	listNode* node; //리스트를 둘러보기 위한 노드
+	node=h->first; //node에 리스트의 주소를 넣어줌
+	NewNode->key=key; //새로운 노드의 키에 입력받은키 할당
+	if(h->first==NULL){ //헤드가 비어있으면 리스트의 첫 노드로 NewNode 삽입
+			h->first=NewNode;
+			NewNode->rlink=NULL; //NewNode의 rlink를 비워 다음 노드가 올 수 있도록 함
+		}
 
+	while(node->rlink!=NULL){
+		if(node->key>key){
+			NewNode->rlink=node->rlink;
+			NewNode->llink=node;
+			node->rlink->llink=NewNode;
+			node->rlink=NewNode;
+			return 0;
+		}
+
+			node=node->rlink;
+	}
 	return 0;
-}*/
+} //구현실패
 
 
 /**
  * list에서 key에 대한 노드 삭제
  */
-/*int deleteNode(headNode* h, int key) {
+int deleteNode(headNode* h, int key) {
+	if(h->first==NULL){
+		return 0;
+	} //리스트가 비어있을 때 전처리
+	listNode* node;
+	node=h->first;
+	while(node->rlink!=NULL){
+		if(node->key==key){
+			node->llink->rlink=node->rlink;
+			node->rlink->llink=node->llink;
+			free(node);
+		}
+		node=node->rlink;
+	}
 
 	return 1;
-}*/
+} //시작부분 구현안됨
 
 
